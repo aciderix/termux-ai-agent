@@ -19,6 +19,11 @@ data class PromptObject(
 
 @JsonClass(generateAdapter = true)
 data class ChatResponse(
+    val aiRecord: AiRecord?
+)
+
+@JsonClass(generateAdapter = true)
+data class AiRecord(
     val aiRecordDetail: AiRecordDetail?
 )
 

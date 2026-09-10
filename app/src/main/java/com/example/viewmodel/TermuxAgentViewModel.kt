@@ -204,7 +204,7 @@ class TermuxAgentViewModel(application: Application) : AndroidViewModel(applicat
                 val apiKey = BuildConfig.MIN1_API_KEY
                 
                 val response = api.chat(apiKey, request)
-                val replyText = response.aiRecordDetail?.resultObject?.firstOrNull() ?: "Erreur: Pas de réponse."
+                val replyText = response.aiRecord?.aiRecordDetail?.resultObject?.firstOrNull() ?: "Erreur: Pas de réponse de l'IA (JSON inattendu: $response)"
                 
                 val agentMsg = Message(Role.AGENT, replyText)
                 _messages.value = _messages.value + agentMsg
