@@ -1,0 +1,6 @@
+{
+  "name": "Termux AI Agent",
+  "description": "Un agent multimodale connecté à termux propulsé par 1min.ai",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
