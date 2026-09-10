@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import kotlinx.coroutines.delay
 import com.example.receiver.ResultBus
 import okhttp3.OkHttpClient
@@ -195,6 +196,7 @@ class TermuxAgentViewModel(application: Application) : AndroidViewModel(applicat
                 } + "\n\nAssistant:"
 
                 val request = ChatRequest(
+                    type = "UNIFY_CHAT_WITH_AI",
                     model = _selectedModel.value,
                     promptObject = PromptObject(prompt = promptText)
                 )
@@ -202,7 +204,7 @@ class TermuxAgentViewModel(application: Application) : AndroidViewModel(applicat
                 val apiKey = BuildConfig.MIN1_API_KEY
                 
                 val response = api.chat(apiKey, request)
-                val replyText = response.text ?: "Erreur: Pas de réponse."
+                val replyText = response.aiRecordDetail?.resultObject?.firstOrNull() ?: "Erreur: Pas de réponse."
                 
                 val agentMsg = Message(Role.AGENT, replyText)
                 _messages.value = _messages.value + agentMsg
@@ -215,6 +217,9 @@ class TermuxAgentViewModel(application: Application) : AndroidViewModel(applicat
                     executeTermuxCommand(cmd)
                 }
 
+            } catch (e: HttpException) {
+                val errorBody = e.response()?.errorBody()?.string() ?: "Pas de détails."
+                _messages.value = _messages.value + Message(Role.SYSTEM, "Erreur API (HTTP ${e.code()}): $errorBody")
             } catch (e: Exception) {
                 _messages.value = _messages.value + Message(Role.SYSTEM, "Erreur réseau: ${e.message}")
             } finally {

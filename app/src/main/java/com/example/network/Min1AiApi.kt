@@ -7,7 +7,7 @@ import retrofit2.http.POST
 
 @JsonClass(generateAdapter = true)
 data class ChatRequest(
-    val type: String = "UNIFY_CHAT_WITH_AI",
+    val type: String,
     val model: String,
     val promptObject: PromptObject
 )
@@ -19,9 +19,12 @@ data class PromptObject(
 
 @JsonClass(generateAdapter = true)
 data class ChatResponse(
-    val type: String?,
-    val model: String?,
-    val text: String?
+    val aiRecordDetail: AiRecordDetail?
+)
+
+@JsonClass(generateAdapter = true)
+data class AiRecordDetail(
+    val resultObject: List<String>?
 )
 
 interface Min1AiApi {

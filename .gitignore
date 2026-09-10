@@ -21,3 +21,5 @@ deploy_github.sh
 *.apk
 *.base64
 .build-outputs/
+update_github.sh
+fix_github.sh
